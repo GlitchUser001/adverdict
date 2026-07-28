@@ -593,15 +593,22 @@ text="An advertisement may be misleading when it falsely describes a product or 
                   </div>
 
                   <button
-                    onClick={() => {
-                      setParty(null);
-                      setViolation(null);
-                    }}
-                    className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold hover:bg-muted"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    Reset scenario
-                  </button>
+  onClick={() => {
+    setParty(null);
+    setViolation(null);
+
+    setTimeout(() => {
+      document.getElementById("calculator")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }}
+  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold hover:bg-muted"
+>
+  <RotateCcw className="h-3.5 w-3.5" />
+  Reset scenario
+</button>
                 </div>
               </div>
             ) : (
