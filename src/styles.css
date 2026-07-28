@@ -1,0 +1,605 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Main light theme */
+  --background: oklch(0.98 0.005 90);
+  --foreground: oklch(0.2 0.03 260);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.03 260);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.03 260);
+
+  /* Deep navy */
+  --primary: oklch(0.25 0.05 260);
+  --primary-foreground: oklch(0.98 0.01 90);
+
+  --secondary: oklch(0.94 0.02 85);
+  --secondary-foreground: oklch(0.25 0.05 260);
+
+  --muted: oklch(0.95 0.01 85);
+  --muted-foreground: oklch(0.45 0.03 260);
+
+  /* Warm parchment */
+  --accent: oklch(0.92 0.05 85);
+  --accent-foreground: oklch(0.25 0.05 260);
+
+  /* Justice gold */
+  --gold: oklch(0.72 0.13 80);
+  --gold-foreground: oklch(0.2 0.03 260);
+
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 90);
+
+  --border: oklch(0.88 0.02 85);
+  --input: oklch(0.9 0.02 85);
+  --ring: oklch(0.72 0.13 80);
+
+  --gradient-hero:
+    linear-gradient(
+      135deg,
+      oklch(0.22 0.05 260),
+      oklch(0.35 0.07 265)
+    );
+
+  --gradient-gold:
+    linear-gradient(
+      135deg,
+      oklch(0.78 0.13 82),
+      oklch(0.65 0.15 70)
+    );
+
+  --shadow-elegant:
+    0 20px 50px -20px oklch(0.25 0.05 260 / 0.35);
+
+  --shadow-card:
+    0 8px 24px -12px oklch(0.25 0.05 260 / 0.2);
+}
+
+/* ===============================
+   DARK MODE
+   =============================== */
+
+.dark {
+  --background: oklch(0.15 0.03 260);
+  --foreground: oklch(0.96 0.01 85);
+
+  --card: oklch(0.2 0.04 260);
+  --card-foreground: oklch(0.96 0.01 85);
+
+  --primary: oklch(0.72 0.13 80);
+  --primary-foreground: oklch(0.15 0.03 260);
+
+  --border: oklch(0.3 0.04 260);
+}
+
+/* ===============================
+   BASE
+   =============================== */
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+
+    background-image:
+      radial-gradient(
+        circle at 10% 0%,
+        oklch(0.72 0.13 80 / 0.08),
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 90% 100%,
+        oklch(0.25 0.05 260 / 0.08),
+        transparent 40%
+      );
+
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-serif {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ===============================
+   UTILITIES
+   =============================== */
+
+@utility bg-gradient-hero {
+  background-image: var(--gradient-hero);
+}
+
+@utility bg-gradient-gold {
+  background-image: var(--gradient-gold);
+}
+
+@utility shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float-orb {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(0, 28px, 0) scale(1.08);
+  }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.4s ease-out both;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =========================================
+   ADVERDICT HERO
+   ========================================= */
+
+.hero-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  /*
+   * Layer 1: dark vertical fade
+   * Layer 2: stronger left-side overlay for text
+   * Layer 3: actual hero photograph
+   */
+
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(4, 10, 20, 0.58) 0%,
+      rgba(5, 12, 24, 0.72) 45%,
+      rgba(5, 12, 24, 0.96) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(3, 9, 18, 0.92) 0%,
+      rgba(5, 12, 24, 0.76) 42%,
+      rgba(5, 12, 24, 0.38) 75%,
+      rgba(5, 12, 24, 0.58) 100%
+    ),
+    url("/images/hero-bg.jpg");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  min-height: 72svh;
+}
+
+/*
+ * Soft vignette helps the image blend into
+ * the rest of the dark legal theme.
+ */
+
+.hero-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 35%,
+      rgba(2, 7, 15, 0.35) 100%
+    );
+}
+
+/*
+ * Bottom transition prevents a harsh edge
+ * between hero and the light intro section.
+ */
+
+.hero-shell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100px;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(5, 12, 24, 0.35)
+    );
+}
+
+/* ===============================
+   HERO GRID
+   =============================== */
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.09;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.08) 1px,
+      transparent 1px
+    );
+
+  background-size: 44px 44px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 88%
+    );
+
+  pointer-events: none;
+}
+
+/* ===============================
+   HERO AMBIENT ORBS
+   =============================== */
+
+.hero-orb {
+  position: absolute;
+
+  border-radius: 999px;
+
+  filter: blur(25px);
+
+  opacity: 0.42;
+
+  animation:
+    float-orb 9s ease-in-out infinite alternate;
+
+  pointer-events: none;
+}
+
+.hero-orb-one {
+  width: 18rem;
+  height: 18rem;
+
+  right: -7rem;
+  top: 2rem;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(200, 155, 69, 0.85) 0%,
+      transparent 68%
+    );
+}
+
+.hero-orb-two {
+  width: 14rem;
+  height: 14rem;
+
+  left: -7rem;
+  bottom: -2rem;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(53, 93, 146, 0.85) 0%,
+      transparent 70%
+    );
+
+  animation-delay: -3s;
+}
+
+/* ===============================
+   SECTION LABELS
+   =============================== */
+
+.section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  color: var(--color-primary);
+
+  font-size: 0.65rem;
+  line-height: 1rem;
+  font-weight: 800;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+/* ===============================
+   SCENARIO RESULTS
+   =============================== */
+
+.result-head {
+  background:
+    linear-gradient(
+      145deg,
+      #0a1728,
+      #172b45
+    );
+}
+
+.result-panel {
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+
+  padding: 1rem;
+
+  background: var(--color-card);
+}
+
+.result-panel p {
+  margin-top: 0.55rem;
+
+  font-size: 0.75rem;
+  line-height: 1.3rem;
+
+  color: var(--color-muted-foreground);
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+
+  color: var(--color-foreground);
+}
+
+/* ===============================
+   KNOWLEDGE SECTION
+   =============================== */
+
+.knowledge-shell {
+  background:
+    linear-gradient(
+      180deg,
+      oklch(0.965 0.012 86),
+      oklch(0.985 0.006 90)
+    );
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+
+.footer-shell {
+  background:
+    linear-gradient(
+      145deg,
+      #07111f,
+      #101e31
+    );
+}
+
+/* =========================================
+   PHONE-FIRST HERO
+   ========================================= */
+
+@media (max-width: 640px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .hero-shell {
+    min-height: 74svh;
+
+    /*
+     * Adjust this percentage depending on
+     * where the main subject is in your photo.
+     */
+
+    background-position: 58% center;
+
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3, 9, 18, 0.55) 0%,
+        rgba(4, 10, 20, 0.72) 45%,
+        rgba(5, 12, 24, 0.97) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(3, 9, 18, 0.88) 0%,
+        rgba(5, 12, 24, 0.60) 75%,
+        rgba(5, 12, 24, 0.55) 100%
+      ),
+      url("/images/hero-bg.jpg");
+  }
+
+  .hero-grid {
+    background-size: 34px 34px;
+    opacity: 0.07;
+  }
+
+  .hero-orb-one {
+    width: 13rem;
+    height: 13rem;
+
+    right: -6rem;
+    top: 3rem;
+  }
+
+  .hero-orb-two {
+    width: 10rem;
+    height: 10rem;
+
+    left: -5rem;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-shell {
+    min-height: 74svh;
+  }
+}
+
+/* =========================================
+   CONTENT PROTECTION / PRESENTATION MODE
+   ========================================= */
+
+/* Prevent text selection */
+
+html,
+body,
+#root {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Prevent images from being selected / dragged */
+
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+
+  pointer-events: none;
+}
+
+/* Prevent selection across normal content */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+section,
+article,
+header,
+footer,
+label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Keep controls interactive */
+
+button,
+a,
+input,
+textarea,
+select {
+  pointer-events: auto;
+}
+
+/* Allow editing/selecting inside form controls */
+
+input,
+textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
