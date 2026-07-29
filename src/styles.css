@@ -216,8 +216,15 @@
   animation: scale-in 0.4s ease-out both;
 }
 
-html {
+html,
+body {
   scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+main {
+  transform-origin: center center;
+  will-change: filter, opacity, transform;
 }
 
 /* =========================================
@@ -602,4 +609,26 @@ textarea {
   -webkit-user-select: text;
   -moz-user-select: text;
   user-select: text;
+}
+@keyframes result-reveal {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(18px) scale(0.98);
+  }
+
+  60% {
+    opacity: 0.75;
+    filter: blur(3px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-result-reveal {
+  animation: result-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

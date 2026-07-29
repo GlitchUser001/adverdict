@@ -365,6 +365,8 @@ function Index() {
   const [party, setParty] = useState<PartyId | null>(null);
   const [violation, setViolation] = useState<ViolationId | null>(null);
   const [openInfo, setOpenInfo] = useState<string | null>("misleading");
+  const [isResetting, setIsResetting] = useState(false);
+  const [isNavigatingToResult, setIsNavigatingToResult] = useState(false);
 
   useEffect(() => {
     const preventContextMenu = (event: MouseEvent) => {
@@ -444,7 +446,13 @@ function Index() {
         </div>
       </header>
 
-      <main>
+      <main
+  className={`transition-all duration-500 ${
+    isResetting || isNavigatingToResult
+      ? "blur-[3px] opacity-75 scale-[0.995]"
+      : "blur-0 opacity-100 scale-100"
+  }`}
+>
         {/* INTRO */}
         <section
           id="intro"
@@ -514,30 +522,43 @@ text="An advertisement may be misleading when it falsely describes a product or 
 
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {VIOLATIONS.map((v) => (
-                <OptionCard
-                  key={v.id}
-                  active={violation === v.id}
-                  onClick={() => setViolation(v.id)}
-                  Icon={v.Icon}
-                  label={v.label}
-                  desc={v.desc}
-                  tag={v.group}
-                />
-              ))}
+  <OptionCard
+    key={v.id}
+    active={violation === v.id}
+    onClick={() => {
+  setViolation(v.id);
+
+  if (party) {
+    setIsNavigatingToResult(true);
+
+    setTimeout(() => {
+      document.getElementById("scenario-result")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+
+    setTimeout(() => {
+      setIsNavigatingToResult(false);
+    }, 700);
+  }
+}}
+    Icon={v.Icon}
+    label={v.label}
+    desc={v.desc}
+    tag={v.group}
+  />
+))}
             </div>
           </div>
 
           {/* STEP 03 */}
-          <div className="mt-10">
-            <StepHeader
-              step="03"
-              title="Scenario Result"
-            />
+          <div id="scenario-result" className="mt-10 scroll-mt-6">
 
             {result &&
             selectedParty &&
             selectedViolation ? (
-              <div className="mt-4 overflow-hidden rounded-[1.6rem] border border-border bg-card shadow-elegant animate-scale-in">
+              <div className="mt-4 overflow-hidden rounded-[1.6rem] border border-border bg-card shadow-elegant animate-result-reveal">
                 <div className="result-head px-5 py-6 text-primary-foreground sm:px-7">
                   <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.22em] text-gold">
                     <ShieldAlert className="h-4 w-4" />
@@ -594,20 +615,30 @@ text="An advertisement may be misleading when it falsely describes a product or 
 
                   <button
   onClick={() => {
-    setParty(null);
-    setViolation(null);
+    setIsResetting(true);
+
+    document.getElementById("calculator")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
 
     setTimeout(() => {
-      document.getElementById("calculator")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+      setParty(null);
+      setViolation(null);
+    }, 300);
+
+    setTimeout(() => {
+      setIsResetting(false);
+    }, 650);
   }}
-  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold hover:bg-muted"
+  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold transition-all duration-300 hover:bg-muted active:scale-95"
 >
-  <RotateCcw className="h-3.5 w-3.5" />
-  Reset scenario
+  <RotateCcw
+    className={`h-3.5 w-3.5 ${
+      isResetting ? "animate-spin" : ""
+    }`}
+  />
+  {isResetting ? "Resetting..." : "Reset scenario"}
 </button>
                 </div>
               </div>
