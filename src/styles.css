@@ -632,3 +632,20 @@ textarea {
 .animate-result-reveal {
   animation: result-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+@keyframes fade-down {
+  from{
+    opacity:0;
+    transform:translateY(-12px);
+    filter:blur(6px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+  }
+}
+
+.animate-fade-down{
+  animation:fade-down .45s cubic-bezier(.22,1,.36,1);
+}

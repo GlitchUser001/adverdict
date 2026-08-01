@@ -367,6 +367,8 @@ function Index() {
   const [openInfo, setOpenInfo] = useState<string | null>("misleading");
   const [isResetting, setIsResetting] = useState(false);
   const [isNavigatingToResult, setIsNavigatingToResult] = useState(false);
+  const [showPartyNotice, setShowPartyNotice] = useState(false);
+const [closingNotice, setClosingNotice] = useState(false);
 
   useEffect(() => {
     const preventContextMenu = (event: MouseEvent) => {
@@ -492,29 +494,79 @@ text="An advertisement may be misleading when it falsely describes a product or 
             pretending every click produces the same penalty.
           </p>
 
-          {/* STEP 01 */}
-          <div className="mt-8">
+{/* STEP 01 */}
+<div
+  id="party-section"
+  className="mt-8 scroll-mt-6"
+>
             <StepHeader
               step="01"
               title="Responsible Party"
             />
+            {showPartyNotice && (
+  <div
+  className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)]
+  ${
+    closingNotice
+      ? "max-h-0 opacity-0 scale-y-95 mt-0"
+      : "max-h-40 opacity-100 mt-4"
+  }`}
+>
 
+    <div className="flex items-center gap-3 px-5 py-4">
+
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+        <AlertTriangle className="h-5 w-5 text-amber-600" />
+      </div>
+
+      <div>
+        <p className="font-semibold text-amber-900">
+          Responsible Party Required
+        </p>
+
+        <p className="text-sm text-amber-700">
+          Please select a responsible party before choosing a violation.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+)}
             <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
               {PARTIES.map((p) => (
-                <OptionCard
-                  key={p.id}
-                  active={party === p.id}
-                  onClick={() => setParty(p.id)}
-                  Icon={p.Icon}
-                  label={p.label}
-                  desc={p.desc}
-                />
-              ))}
+  <OptionCard
+    key={p.id}
+    active={party === p.id}
+    onClick={() => {
+      setParty(p.id);
+      setClosingNotice(true);
+
+setTimeout(() => {
+  setShowPartyNotice(false);
+  setClosingNotice(false);
+}, 350);
+
+      setTimeout(() => {
+        document.getElementById("violation-section")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 120);
+    }}
+    Icon={p.Icon}
+    label={p.label}
+    desc={p.desc}
+  />
+))}
             </div>
           </div>
 
-          {/* STEP 02 */}
-          <div className="mt-10">
+{/* STEP 02 */}
+<div
+  id="violation-section"
+  className="mt-10 scroll-mt-6"
+>
             <StepHeader
               step="02"
               title="Type of Violation"
@@ -525,25 +577,39 @@ text="An advertisement may be misleading when it falsely describes a product or 
   <OptionCard
     key={v.id}
     active={violation === v.id}
-    onClick={() => {
+onClick={() => {
+
+  // Don't allow selecting a violation first
+if (!party) {
+
+  setShowPartyNotice(true);
+
+  document.getElementById("party-section")?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+
+  return;
+}
+
+  // Select the violation
   setViolation(v.id);
 
-  if (party) {
-    setIsNavigatingToResult(true);
+  // Existing animation
+  setIsNavigatingToResult(true);
 
-    setTimeout(() => {
-      document.getElementById("scenario-result")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+  setTimeout(() => {
+    document.getElementById("scenario-result")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 100);
 
-    setTimeout(() => {
-      setIsNavigatingToResult(false);
-    }, 700);
-  }
-}}
-    Icon={v.Icon}
+  setTimeout(() => {
+    setIsNavigatingToResult(false);
+  }, 700);
+
+}}    Icon={v.Icon}
     label={v.label}
     desc={v.desc}
     tag={v.group}
